@@ -9,6 +9,7 @@ import LoginPage from "./features/auth/pages/LoginPage";
 import ShipmentPage from "./features/shipments/pages/ShipmentPage";
 
 import { getCustomTheme } from "./theme/theme";
+
 import NotFoundPage from "./components/common/NotFoundPage";
 
 export default function App() {

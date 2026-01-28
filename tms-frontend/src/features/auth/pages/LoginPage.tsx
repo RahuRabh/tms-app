@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { useMutation } from "@apollo/client/react";
-import { LOGIN } from "../graphql/mutations";
-import { Box, TextField, Button, Typography, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { Box, TextField, Button, Typography, Paper } from "@mui/material";
+
 import type { loginResponse, loginVariables } from "../types";
+
 import { useSnackbar } from "notistack";
+
+import { LOGIN } from "../graphql/mutations";
+import { useMutation } from "@apollo/client/react";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -36,131 +39,91 @@ export default function LoginPage() {
     navigate("/shipments/view");
   };
 
-//   return (
-//     <Box
-//       display="flex"
-//       justifyContent="center"
-//       alignItems="center"
-//       height="100vh"
-//     >
-//       <Paper sx={{ p: 4, width: 320 }}>
-//         <Typography variant="h6" mb={2}>
-//           Login
-//         </Typography>
-//         <TextField
-//           label="Email"
-//           name="email"
-//           fullWidth
-//           margin="dense"
-//           onChange={handleChange}
-//         />
-//         <TextField
-//           label="Password"
-//           name="password"
-//           type="password"
-//           fullWidth
-//           margin="dense"
-//           onChange={handleChange}
-//         />
-//         <Button
-//           variant="contained"
-//           fullWidth
-//           sx={{ mt: 2 }}
-//           onClick={handleLogin}
-//         >
-//           Login
-//         </Button>
-//       </Paper>
-//     </Box>
-//   );
-// }
-
-return (
-  <Box
-    display="flex"
-    justifyContent="center"
-    alignItems="center"
-    height="100vh"
-    sx={{
-      // Modern gradient background
-      background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-    }}
-  >
-    <Paper
-      elevation={6}
+  return (
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
       sx={{
-        p: 5,
-        width: 380,
-        borderRadius: 4,
-        textAlign: "center",
-        // Subtle glass effect
-        backgroundColor: "rgba(255, 255, 255, 0.9)",
-        backdropFilter: "blur(10px)",
+        background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
       }}
     >
-      <Typography
-        variant="h4"
-        fontWeight="700"
-        color="primary"
-        gutterBottom
-        sx={{ letterSpacing: "-0.5px" }}
-      >
-        Welcome Back
-      </Typography>
-      <Typography variant="body2" color="textSecondary" mb={4}>
-        Enter your credentials to access the TMS Dashboard
-      </Typography>
-
-      <TextField
-        label="Email Address"
-        name="email"
-        fullWidth
-        variant="outlined"
-        margin="normal"
-        autoComplete="email"
-        onChange={handleChange}
-        sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
-      />
-      <TextField
-        label="Password"
-        name="password"
-        type="password"
-        fullWidth
-        variant="outlined"
-        margin="normal"
-        autoComplete="current-password"
-        onChange={handleChange}
-        sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
-      />
-      
-      <Button
-        variant="contained"
-        fullWidth
-        size="large"
+      <Paper
+        elevation={6}
         sx={{
-          mt: 3,
-          py: 1.5,
-          borderRadius: 2,
-          textTransform: "none",
-          fontSize: "1.1rem",
-          fontWeight: "600",
-          boxShadow: "0 4px 14px 0 rgba(25, 118, 210, 0.39)",
-          transition: "transform 0.2s",
-          "&:hover": {
-            transform: "translateY(-2px)",
-            boxShadow: "0 6px 20px rgba(25, 118, 210, 0.23)",
-          },
+          p: 5,
+          width: 380,
+          borderRadius: 4,
+          textAlign: "center",
+          backgroundColor: "rgba(255, 255, 255, 0.9)",
+          backdropFilter: "blur(10px)",
         }}
-        onClick={handleLogin}
       >
-        Sign In
-      </Button>
-
-      <Box mt={3}>
-        <Typography variant="caption" color="textSecondary">
-          Protected by TMS Secure Auth
+        <Typography
+          variant="h4"
+          fontWeight="700"
+          color="primary"
+          gutterBottom
+          sx={{ letterSpacing: "-0.5px" }}
+        >
+          Welcome Back
         </Typography>
-      </Box>
-    </Paper>
-  </Box>
-)};
+        <Typography variant="body2" color="textSecondary" mb={4}>
+          Enter your credentials to access the TMS Dashboard
+        </Typography>
+
+        <TextField
+          label="Email Address"
+          name="email"
+          fullWidth
+          variant="outlined"
+          margin="normal"
+          autoComplete="email"
+          onChange={handleChange}
+          sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
+        />
+        <TextField
+          label="Password"
+          name="password"
+          type="password"
+          fullWidth
+          variant="outlined"
+          margin="normal"
+          autoComplete="current-password"
+          onChange={handleChange}
+          sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
+        />
+
+        <Button
+          variant="contained"
+          fullWidth
+          size="large"
+          sx={{
+            mt: 3,
+            py: 1.5,
+            borderRadius: 2,
+            textTransform: "none",
+            fontSize: "1.1rem",
+            fontWeight: "600",
+            boxShadow: "0 4px 14px 0 rgba(25, 118, 210, 0.39)",
+            transition: "transform 0.2s",
+            "&:hover": {
+              transform: "translateY(-2px)",
+              boxShadow: "0 6px 20px rgba(25, 118, 210, 0.23)",
+            },
+          }}
+          onClick={handleLogin}
+        >
+          Sign In
+        </Button>
+
+        <Box mt={3}>
+          <Typography variant="caption" color="textSecondary">
+            Protected by TMS Secure Auth
+          </Typography>
+        </Box>
+      </Paper>
+    </Box>
+  );
+}

@@ -1,5 +1,5 @@
-import { Box, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { Box, Typography, Button } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 export default function NotFoundPage() {
