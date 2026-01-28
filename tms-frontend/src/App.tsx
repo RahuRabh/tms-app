@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { ThemeProvider, CssBaseline } from "@mui/material";
 
@@ -9,6 +9,7 @@ import LoginPage from "./features/auth/pages/LoginPage";
 import ShipmentPage from "./features/shipments/pages/ShipmentPage";
 
 import { getCustomTheme } from "./theme/theme";
+import NotFoundPage from "./components/common/NotFoundPage";
 
 export default function App() {
   const [mode, setMode] = useState<"light" | "dark">("light");
@@ -22,6 +23,8 @@ export default function App() {
       <CssBaseline />
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Navigate to="/shipments/grid" replace />} />
+
           <Route path="/login" element={<LoginPage />} />
 
           <Route
@@ -34,6 +37,9 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route path="*" element={<NotFoundPage />} />
+
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
