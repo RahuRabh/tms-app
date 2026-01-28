@@ -35,7 +35,10 @@ export const ShipmentUIProvider = ({
     setFormOpen(true);
   };
 
-  const closeForm = () => setFormOpen(false);
+  const closeForm = () => {
+    setFormOpen(false);
+    setEditingShipment(null);
+  }
 
   return (
     <ShipmentUIContext.Provider

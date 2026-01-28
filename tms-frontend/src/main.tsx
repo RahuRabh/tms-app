@@ -29,6 +29,7 @@ const client = new ApolloClient({
 createRoot(document.getElementById("root")!).render(
   <SnackbarProvider
     maxSnack={3}
+    autoHideDuration={1000}
     anchorOrigin={{ vertical: "top", horizontal: "right" }}
   >
     <ApolloProvider client={client}>

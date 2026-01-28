@@ -1,86 +1,64 @@
-# 🚚 Transportation Management System (TMS) – Fullstack Demo
+# 🚚 UltraShip TMS – High-Performance Logistics Dashboard
 
-A full-stack SaaS-style Transportation Management System built to demonstrate scalable architecture, clean UI design, and role-based system behavior.
+A professional, full-stack SaaS-style Transportation Management System built to demonstrate scalable architecture, enterprise-grade UI/UX, and robust data management.
 
-This project simulates a real-world logistics dashboard used to manage shipment operations.
-
+## 🚀 Recent Updates & Pro Features
+- **Dynamic Theming:** Seamless Light/Dark mode with a custom Indigo/Slate palette.
+- **Advanced Data Grid:** Server-side pagination, multi-field filtering, and persistent sorting.
+- **Optimised UX:** Responsive sidebar with mobile drawer, glassmorphic header, and interactive shipment drawer.
+- **Apollo Cache Management:** Instant UI updates via cache normalization and smart refetching.
 
 ## 🧱 System Architecture
-
 **React (Frontend)** → **Apollo Client** → **GraphQL API (Node.js)** → **MongoDB**
 
 ### Frontend
-- React + TypeScript
-- Apollo Client
-- MUI (Material UI)
-- Context-based UI state management
+- **Framework:** React 18+ with TypeScript
+- **State:** Apollo Client (Server State) & Context API (UI State)
+- **Styling:** MUI v6/v7 with Emotion & Responsive Breakpoints
+- **Feedback:** Notistack (Snackbars) & MUI Skeletons
 
 ### Backend
-- Node.js + Express
-- Apollo GraphQL Server
-- MongoDB + Mongoose
-- JWT Authentication
-- Role-Based Access Control (RBAC)
+- **Server:** Apollo Server + Express
+- **Database:** MongoDB + Mongoose (Parallel query execution)
+- **Security:** JWT Authentication & Middleware-based RBAC
+- **Schema:** Strict GraphQL Type System with Input Objects
 
 ## ✨ Key Features
 
-### 🔐 Authentication & Roles
-- Secure login using JWT
-- Two roles: **Admin** and **Employee**
-- Backend-enforced authorization
+### 🔐 Security & RBAC
+- **Admin:** Full CRUD access to shipments.
+- **Employee:** View-only access with "Flagging" privileges.
+- **Auth:** Secure Bcrypt hashing and JWT-protected resolvers.
 
-### 📦 Shipment Management
-- Grid and Tile views
-- Shipment detail drawer
-- Add, Edit, Delete shipments (Admin only)
-- Flag shipments for attention (Admin & Employee)
-
-### 🎨 Product-Level UI
-- Enterprise dashboard layout
-- Sidebar navigation
-- Header with user profile & logout
-- Loading skeletons
-- Toast notifications
-- Responsive design
+### 📦 Logistics Workflow
+- **Dual Views:** High-density Data Grid and modern Tile/Card layouts.
+- **Data Controls:** 
+  - **Filter:** Instant status-based filtering (Pending, In Transit, etc.).
+  - **Sort:** Persistent server-side sorting by Rate and Date.
+  - **Pagination:** Offset-based navigation with dynamic page counts.
+- **Detail Drawer:** Deep-dive view with "Logistics Route Map" visualization.
 
 ## 📁 Project Structure
-
-tms-app/
-├── frontend/ → React application
-└── backend/ → GraphQL API server
+`tms-app/`
+├── `frontend/` → React application (Vite-based)
+└── `backend/` → GraphQL API server (Express/Node)
 
 ## 🚀 Getting Started
 
-### 1️⃣ Clone Repository
-
+### 1️⃣ Run Backend
 ```bash
-git clone https://github.com/YOUR_USERNAME/tms-app.git
-cd tms-app
+cd backend && npm install && npm run dev
+GraphQL Sandbox: http://localhost:4000/graphql
 ```
 
-▶️ Run Backend
-> cd backend
-> npm install
-> npm run dev
-
-GraphQL runs at: http://localhost:4000/graphql
-
-▶️ Run Frontend
-> cd frontend
-> npm install
-> npm run dev
-
+### 2️⃣ Run Frontend
+```bash
+cd frontend && npm install && npm run dev
 App runs at: http://localhost:5173
+```
 
 👤 Demo Accounts
-Admin - email - admin@test.com password - admin123
-Employee - email - emp@test.com password - emp123
+Admin: admin@test.com / admin123
+Employee: emp@test.com / emp123
 
-👨‍💻 Author
-Rahul
-🔗 LinkedIn: https://www.linkedin.com/in/rahurabh/
-🐦 X: https://x.com/KumarRahul1195
-💻 GitHub: https://github.com/RahuRabh
-
-💬 Final Note
-This project demonstrates real-world product engineering practices with a focus on scalability, maintainability, and polished user experience.
+👨‍💻 Author: Rahul

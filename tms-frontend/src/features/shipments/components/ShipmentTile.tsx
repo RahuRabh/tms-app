@@ -1,4 +1,9 @@
+import { useState } from "react";
+
 import { type Shipment } from "../types";
+
+import { useSnackbar } from "notistack";
+
 import {
   Card,
   CardContent,
@@ -11,13 +16,15 @@ import {
   Box,
   Alert,
   Skeleton,
+  Stack,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useState } from "react";
+
 import { useMutation } from "@apollo/client/react";
 import { FLAG_SHIPMENT, DELETE_SHIPMENT } from "../graphql/mutations";
-import { GET_SHIPMENTS } from "../graphql/queries";
-import { useSnackbar } from "notistack";
+
+import getStatusStyles from "../../../utils/statusStyle";
+import formatDate from "../../../utils/formatDate";
 
 interface FlagMutationResponse {
   flagShipment: {
@@ -25,6 +32,10 @@ interface FlagMutationResponse {
     flagged: boolean;
     __typename: string;
   };
+}
+
+interface DeleteResponse {
+  deleteShipment: boolean;
 }
 
 export default function ShipmentsTile({
@@ -60,29 +71,54 @@ export default function ShipmentsTile({
   };
 
   const [flagShipment] = useMutation<FlagMutationResponse>(FLAG_SHIPMENT, {
-    refetchQueries: [
-      { query: GET_SHIPMENTS, variables: { page: 1, limit: 10 } },
-    ],
-    onCompleted: (data) => {
-      const message = data.flagShipment.flagged ? "Flagged" : "Unflagged";
-      enqueueSnackbar(`Shipment ${message}`, { variant: "info" });
-    },
-    onError: () => {
-      enqueueSnackbar("Operation failed", { variant: "error" });
-    },
-  });
+  onCompleted: (data) => {
+    const message = data.flagShipment.flagged ? "Flagged" : "Unflagged";
+    enqueueSnackbar(`Shipment ${message}`, { variant: "success" });
+  },
+  onError: (error) => {
+    enqueueSnackbar(error.message || "Operation failed", { variant: "error" });
+  },
+});
 
-  const [deleteShipment] = useMutation(DELETE_SHIPMENT, {
-    refetchQueries: [
-      { query: GET_SHIPMENTS, variables: { page: 1, limit: 10 } },
-    ],
-    onCompleted: () => {
-      enqueueSnackbar("Shipment deleted", { variant: "info" });
+    const [deleteShipment] = useMutation<DeleteResponse>(DELETE_SHIPMENT, {
+      update(cache, { data }, { variables }) {
+      if (data?.deleteShipment) {
+        const normalizedId = cache.identify({ __typename: 'Shipment', id: variables?.id });
+        cache.evict({ id: normalizedId });
+        cache.gc();
+      }
     },
-    onError: () => {
-      enqueueSnackbar("Operation failed", { variant: "error" });
-    },
-  });
+      onCompleted: () => {
+        enqueueSnackbar("Shipment deleted", { variant: "info" });
+      },
+      onError: () => {
+        enqueueSnackbar("Operation failed", { variant: "error" });
+      },
+    });
+
+  function DataRow({
+    label,
+    value,
+    isBold = false,
+  }: {
+    label: string;
+    value: string;
+    isBold?: boolean;
+  }) {
+    return (
+      <Box display="flex" justifyContent="space-between">
+        <Typography variant="caption" color="text.secondary" fontWeight={500}>
+          {label}
+        </Typography>
+        <Typography
+          variant="caption"
+          sx={{ color: "text.primary", fontWeight: isBold ? 800 : 600 }}
+        >
+          {value}
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <Grid container spacing={2}>
@@ -136,53 +172,69 @@ export default function ShipmentsTile({
             <Card
               onClick={() => onSelect(s)}
               sx={{
-                borderRadius: 3,
-                boxShadow: 2,
-                transition: "0.3s",
-                "&:hover": { transform: "translateY(-4px)", boxShadow: 6 },
+                borderRadius: 4,
+                bgcolor: "background.paper",
+                border: "1px solid",
+                borderColor: "divider",
+                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                "&:hover": {
+                  transform: "translateY(-6px)",
+                  boxShadow: (theme) =>
+                    theme.palette.mode === "light"
+                      ? "0 12px 24px -10px rgba(0,0,0,0.1)"
+                      : "0 12px 24px -10px rgba(0,0,0,0.5)",
+                  borderColor: "primary.main",
+                },
                 cursor: "pointer",
               }}
             >
-              <CardContent>
+              <CardContent sx={{ p: 3 }}>
                 <Box
                   display="flex"
                   justifyContent="space-between"
                   alignItems="center"
                 >
-                  <Typography variant="h6">{s.shipperName}</Typography>
-                  <IconButton onClick={(e) => openMenu(e, s)}>
-                    <MoreVertIcon />
+                  <Typography
+                    variant="h6"
+                    sx={{ fontWeight: 700, color: "text.primary" }}
+                  >
+                    {s.shipperName}
+                  </Typography>
+                  <IconButton
+                    size="small"
+                    onClick={(e) => openMenu(e, s)}
+                    sx={{ mt: -0.5, mr: -0.5 }}
+                  >
+                    <MoreVertIcon fontSize="small" />
                   </IconButton>
                 </Box>
 
-                <Typography variant="body2" color="text.secondary">
-                  {s.pickupLocation} → {s.deliveryLocation}
-                </Typography>
-                <Typography>Carrier: {s.carrierName}</Typography>
-                <Typography>
-                  PickUp Date:{" "}
-                  {s.pickupDate
-                    ? new Date(parseInt(s.pickupDate)).toLocaleDateString()
-                    : "N/A"}
-                </Typography>
-                <Typography>
-                  Delivery Date:{" "}
-                  {s.deliveryDate
-                    ? new Date(parseInt(s.deliveryDate)).toLocaleDateString()
-                    : "N/A"}
-                </Typography>
-                <Typography>Rate: ₹{s.rate}</Typography>
-                <Chip
-                  label={s.status}
-                  color={
-                    s.status === "Delivered"
-                      ? "success"
-                      : s.status === "In Transit"
-                        ? "warning"
-                        : "default"
-                  }
-                  size="small"
-                />
+                <Stack spacing={1}>
+                  <DataRow label="Carrier" value={s.carrierName} />
+                  <DataRow
+                    label="Timeline"
+                    value={`${formatDate(s.pickupDate)} - ${formatDate(s.deliveryDate)}`}
+                  />
+                  <DataRow
+                    label="Rate"
+                    value={`₹${s.rate.toLocaleString("en-IN")}`}
+                    isBold
+                  />
+                </Stack>
+
+                <Box
+                  mt={2}
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Chip
+                    label={getStatusStyles(s.status).label}
+                    color={getStatusStyles(s.status).color}
+                    size="small"
+                    sx={{ fontWeight: 700, borderRadius: 1.5 }}
+                  />
+                </Box>
               </CardContent>
             </Card>
           </Grid>

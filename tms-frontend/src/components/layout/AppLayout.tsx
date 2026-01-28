@@ -1,30 +1,64 @@
-import { Box } from "@mui/material";
+import { useState } from "react";
+import { Box, Drawer } from "@mui/material";
 
 import Header from "./Header";
+import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 
 import { ShipmentUIProvider } from "../../features/shipments/context/ShipmentUIContext";
-import Footer from "./layout";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default function AppLayout({
+  children,
+  toggleTheme,
+}: {
+  children: React.ReactNode;
+  toggleTheme: () => void;
+}) {
+  const [mobileOpen, setmobileOpen] = useState(false);
+  const handleDrawerToggle = () => setmobileOpen(!mobileOpen);
+
   return (
     <ShipmentUIProvider>
       <Box
         display="flex"
         flexDirection="column"
         height="100vh"
-        bgcolor="#f5f7fa"
+        bgcolor="background.paper"
       >
-        <Header />
-        <Box flex={1} display="flex" overflow="hidden">
-          <Sidebar />
+        <Header toggleTheme={toggleTheme} onMenuClick={handleDrawerToggle} />
 
-          <Box flex={1} p={3} bgcolor="#f5f7fa" overflow="auto">
-            {children}
+        <Box display="flex" flex={1} overflow="hidden">
+          {/* Hidden on mobile */}
+          <Box
+            component="nav"
+            sx={{
+              width: { md: 260 },
+              flexShrink: { md: 0 },
+              display: { xs: "none", md: "block" },
+            }}
+          >
+            <Sidebar />
           </Box>
 
-          <Footer />
+          {/* MOBILE SIDEBAR (Drawer) */}
+          <Drawer
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{ keepMounted: true }}
+            sx={{
+              display: { xs: "block", md: "none" },
+              "& .MuiDrawer-paper": { boxSizing: "border-box", width: 260 },
+            }}
+          >
+            <Sidebar onNavItemClick={handleDrawerToggle} />
+          </Drawer>
+
+          <Box component="main" flex={1} p={3} overflow="auto">
+            {children}
+          </Box>
         </Box>
+        <Footer />
       </Box>
     </ShipmentUIProvider>
   );

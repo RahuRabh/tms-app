@@ -1,19 +1,31 @@
 import { gql } from "@apollo/client";
 
 export const GET_SHIPMENTS = gql`
-  query GetShipments($page: Int, $limit: Int) {
-    shipments(pagination: { page: $page, limit: $limit }) {
-      id
-      shipperName
-      carrierName
-      pickupLocation
-      deliveryLocation
-      pickupDate
-      deliveryDate
-      status
-      rate
-      flagged
-      createdAt
+  query GetShipments(
+    $page: Int
+    $limit: Int
+    $filter: ShipmentFilterInput
+    $sort: SortInput
+  ) {
+    shipments(
+      pagination: { page: $page, limit: $limit }
+      filter: $filter
+      sort: $sort
+    ) {
+      shipments {
+        id
+        shipperName
+        carrierName
+        pickupLocation
+        deliveryLocation
+        pickupDate
+        deliveryDate
+        status
+        rate
+        flagged
+        createdAt
+      }
+      totalCount
     }
   }
 `;

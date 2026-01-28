@@ -16,6 +16,16 @@ interface ShipmentFormDialogProps {
   onSubmit: (data: any) => void;
   initialData?: Shipment | null;
 }
+const INITIAL_FORM_STATE = {
+  shipperName: "",
+  carrierName: "",
+  pickupLocation: "",
+  deliveryLocation: "",
+  pickupDate: "",
+  deliveryDate: "",
+  rate: "",
+  status: "Pending",
+};
 
 export default function ShipmentFormDialog({
   open,
@@ -23,31 +33,24 @@ export default function ShipmentFormDialog({
   onSubmit,
   initialData,
 }: ShipmentFormDialogProps) {
-  const [form, setForm] = useState({
-    shipperName: "",
-    carrierName: "",
-    pickupLocation: "",
-    deliveryLocation: "",
-    pickupDate: "",
-    deliveryDate: "",
-    rate: "",
-    status: "Pending",
-  });
+  const [form, setForm] = useState(INITIAL_FORM_STATE);
 
   useEffect(() => {
     if (initialData) {
       setForm({
-        shipperName: initialData.shipperName,
-        carrierName: initialData.carrierName,
-        pickupLocation: initialData.pickupLocation,
-        deliveryLocation: initialData.deliveryLocation,
-        pickupDate: initialData.pickupDate,
-        deliveryDate: initialData.deliveryDate,
-        rate: String(initialData.rate || ""),
-        status: initialData.status,
+        shipperName: initialData.shipperName || "",
+        carrierName: initialData.carrierName || "",
+        pickupLocation: initialData.pickupLocation || "",
+        deliveryLocation: initialData.deliveryLocation || "",
+        pickupDate: initialData.pickupDate || "",
+        deliveryDate: initialData.deliveryDate || "",
+        rate: String(initialData.rate ?? ""),
+        status: initialData.status || "Pending",
       });
+    } else {
+      setForm(INITIAL_FORM_STATE);
     }
-  }, [initialData]);
+  }, [initialData, open]);
 
   const handleChange = (e: any) =>
     setForm({ ...form, [e.target.name]: e.target.value });

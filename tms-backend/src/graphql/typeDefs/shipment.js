@@ -16,6 +16,11 @@ module.exports = gql`
     updatedAt: String
   }
 
+  type ShipmentConnection {
+    shipments: [Shipment!]!
+    totalCount: Int!
+  }
+
   input ShipmentFilterInput {
     status: String
     carrierName: String
@@ -38,7 +43,7 @@ module.exports = gql`
       filter: ShipmentFilterInput
       pagination: PaginationInput
       sort: SortInput
-    ): [Shipment!]!
+    ): ShipmentConnection!
 
     shipment(id: ID!): Shipment
   }

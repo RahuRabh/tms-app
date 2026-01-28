@@ -1,26 +1,14 @@
-````md
-# Backend – TMS GraphQL API
+# Backend – UltraShip GraphQL API
 
-GraphQL backend for the Transportation Management System.
+Scalable Node.js API designed for high-concurrency logistics data.
 
-## Tech Stack
-- Node.js
-- Express
-- Apollo Server (GraphQL)
-- MongoDB + Mongoose
-- JWT Authentication
+## ⚙️ Performance Optimizations
+- **Parallel Queries:** Uses `Promise.all` to fetch data and `totalCount` simultaneously.
+- **Dynamic Queries:** Robust Mongoose query building for filtering and sorting.
+- **RBAC Middleware:** Granular role checks (`admin` vs `employee`) at the resolver level.
+- **Lean Payloads:** Efficient document updates using `{ new: true }` in Mongoose.
 
-## Features
-- GraphQL API for shipment management
-- Pagination, filtering, sorting
-- Role-Based Access Control (Admin / Employee)
-- JWT authentication
-
-## Run Locally
-
-```bash
-npm install
-npm run dev
-GraphQL endpoint: http://localhost:4000/graphql
-```
-````
+## 📖 Schema Design
+- **Connection Pattern:** Returns `ShipmentConnection` for advanced pagination.
+- **Input Objects:** Clean variable management for Filters and Pagination.
+- **Custom Resolvers:** Dedicated logic for flagging and lifecycle management.

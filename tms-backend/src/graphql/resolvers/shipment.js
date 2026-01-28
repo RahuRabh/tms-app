@@ -18,9 +18,21 @@ module.exports = {
 
       // Sorting
       const sortOptions = {};
-      if (sort?.field) sortOptions[sort.field] = sort.order || -1;
+      if (sort?.field) {
+        sortOptions[sort.field] = sort.order || -1;
+      } else {
+        sortOptions.createdAt = -1;
+      }
 
-      return Shipment.find(query).sort(sortOptions).skip(skip).limit(limit);
+      const [shipments, totalCount] = await Promise.all([
+        Shipment.find(query).sort(sortOptions).skip(skip).limit(limit),
+        Shipment.countDocuments(query),
+      ]);
+
+      return {
+        shipments,
+        totalCount,
+      };
     },
 
     shipment: async (_, { id }) => {

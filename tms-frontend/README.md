@@ -1,28 +1,18 @@
-````md
-# Frontend – TMS Dashboard
+### 2️⃣ Frontend `README.md`
 
-React + TypeScript frontend for the Transportation Management System.
+```md
+# Frontend – UltraShip Dashboard
 
-## Tech Stack
-- React
-- TypeScript
-- Apollo Client
-- MUI (Material UI)
-- React Router
+Modern React frontend utilizing the latest MUI standards and Apollo Client for state management.
 
-## Features
-- Grid & Tile shipment views
-- Shipment detail drawer
-- Add/Edit shipment form
-- Role-based UI controls
-- Toast notifications & loading skeletons
+## 🛠 Tech Highlights
+- **MUI Theming:** Custom `createTheme` with Dark/Light mode toggle.
+- **Responsive Layout:** Adaptive sidebar that transforms into a mobile drawer.
+- **Performance:** Optimized re-renders using `useMemo` and smart `useEffect` hooks.
+- **Data Flow:** Dynamic GraphQL variables for real-time filtering and sorting.
 
-## Run Locally
-
-```bash
-npm install
-npm run dev
-
-Frontend runs at: http://localhost:5173
-```
-````
+## 📦 Key Components
+- **ShipmentsGrid:** Custom sortable table with `TableSortLabel`.
+- **ShipmentsTile:** Responsive cards with interactive action menus.
+- **ShipmentDetailsDrawer:** Side-panel with route visualization and status logic.
+- **ShipmentFormDialog:** Single-source form handling both Add and Edit logic.
