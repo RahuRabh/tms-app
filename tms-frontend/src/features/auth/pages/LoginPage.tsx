@@ -15,7 +15,7 @@ export default function LoginPage() {
   const { enqueueSnackbar } = useSnackbar();
   const [errors, setErrors] = useState({ email: "", password: "" });
 
-  const [login] = useMutation<loginResponse, loginVariables>(LOGIN, {
+  const [login, { loading }] = useMutation<loginResponse, loginVariables>(LOGIN, {
     onCompleted: () => {
       enqueueSnackbar("Login successful! Welcome back.", {
         variant: "success",
@@ -132,9 +132,10 @@ export default function LoginPage() {
               boxShadow: "0 6px 20px rgba(25, 118, 210, 0.23)",
             },
           }}
+          disabled={loading}
           onClick={handleLogin}
         >
-          Sign In
+          {loading ? "Signing In..." : "Sign In"}
         </Button>
 
         <Box mt={3}>

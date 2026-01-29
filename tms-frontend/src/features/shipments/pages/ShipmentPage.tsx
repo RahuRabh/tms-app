@@ -51,7 +51,7 @@ export default function ShipmentPage() {
     null,
   );
 
-  const [addShipment] = useMutation(ADD_SHIPMENT, {
+  const [addShipment, { loading: isAdding }] = useMutation(ADD_SHIPMENT, {
     refetchQueries: [
       {
         query: GET_SHIPMENTS,
@@ -71,7 +71,7 @@ export default function ShipmentPage() {
     },
   });
 
-  const [updateShipment] = useMutation(UPDATE_SHIPMENT, {
+  const [updateShipment, { loading: isUpdating }] = useMutation(UPDATE_SHIPMENT, {
     refetchQueries: [
       {
         query: GET_SHIPMENTS,
@@ -110,7 +110,7 @@ export default function ShipmentPage() {
     }
   };
 
-  const { data, loading, error } = useQuery<ShipmentData>(GET_SHIPMENTS, {
+  const { data, loading: listLoading, error } = useQuery<ShipmentData>(GET_SHIPMENTS, {
     variables: {
       page: page,
       limit: limit,
@@ -129,6 +129,8 @@ export default function ShipmentPage() {
   };
 
   const statuses = ["Pending", "In Transit", "Delivered", "Cancelled"];
+
+  const isSaving = isAdding || isUpdating;
 
   return (
     <Box>
@@ -174,7 +176,7 @@ export default function ShipmentPage() {
         <ShipmentsGrid
           error={error}
           onEdit={openEdit}
-          loading={loading}
+          loading={listLoading}
           userRole={userRole}
           onSelect={setSelectedShipment}
           shipments={data?.shipments?.shipments ?? []}
@@ -185,7 +187,7 @@ export default function ShipmentPage() {
         <ShipmentsTile
           error={error}
           onEdit={openEdit}
-          loading={loading}
+          loading={listLoading}
           userRole={userRole}
           shipments={data?.shipments?.shipments ?? []}
           onSelect={setSelectedShipment}
@@ -201,11 +203,12 @@ export default function ShipmentPage() {
         key={editingShipment?.id || "new-shipment"}
         open={isFormOpen}
         onClose={closeForm}
+        loading={isSaving}
         onSubmit={handleFormSubmit}
         initialData={editingShipment}
       />
 
-      {!loading && !error && (
+      {!listLoading && !error && (
         <Box display="flex" justifyContent="center" mt={4} mb={2}>
           <Pagination
             count={totalPages}

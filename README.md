@@ -1,8 +1,7 @@
-# 🚚 UltraShip TMS – High-Performance Logistics Dashboard
+# UltraShip TMS – High-Performance Logistics Dashboard
 
 A professional, full-stack SaaS-style Transportation Management System built to demonstrate scalable architecture, enterprise-grade UI/UX, and robust data management.
 
-## 🚀 Recent Updates & Pro Features
 - **Dynamic Theming:** Seamless Light/Dark mode with a custom Indigo/Slate palette.
 - **Advanced Data Grid:** Server-side pagination, multi-field filtering, and persistent sorting.
 - **Optimised UX:** Responsive sidebar with mobile drawer, glassmorphic header, and interactive shipment drawer.
@@ -47,18 +46,24 @@ A professional, full-stack SaaS-style Transportation Management System built to 
 
 ### 1️⃣ Run Backend
 ```bash
-cd backend && npm install && npm run dev
+cd backend
+npm install
+npm run dev
 GraphQL Sandbox: http://localhost:4000/graphql
 ```
 
 ### 2️⃣ Run Frontend
 ```bash
-cd frontend && npm install && npm run dev
+cd frontend
+npm install
+npm run dev
 App runs at: http://localhost:5173
 ```
 
 👤 Demo Accounts
+
 Admin: admin@test.com / admin123
+
 Employee: emp@test.com / emp123
 
 👨‍💻 Author: Rahul

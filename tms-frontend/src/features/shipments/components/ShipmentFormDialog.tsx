@@ -17,6 +17,7 @@ interface ShipmentFormDialogProps {
   onClose: () => void;
   onSubmit: (data: any) => void;
   initialData?: Shipment | null;
+  loading: boolean;
 }
 const INITIAL_FORM_STATE = {
   shipperName: "",
@@ -32,6 +33,7 @@ const INITIAL_FORM_STATE = {
 export default function ShipmentFormDialog({
   open,
   onClose,
+  loading,
   onSubmit,
   initialData,
 }: ShipmentFormDialogProps) {
@@ -138,7 +140,7 @@ export default function ShipmentFormDialog({
           margin="dense"
           slotProps={{
             inputLabel: { shrink: true },
-            htmlInput: {min: today}
+            htmlInput: { min: today },
           }}
           value={form.pickupDate || ""}
           onChange={handleChange}
@@ -151,7 +153,7 @@ export default function ShipmentFormDialog({
           margin="dense"
           slotProps={{
             inputLabel: { shrink: true },
-            htmlInput: { min: form.pickupDate || today}
+            htmlInput: { min: form.pickupDate || today },
           }}
           value={form.deliveryDate || ""}
           onChange={handleChange}
@@ -185,9 +187,11 @@ export default function ShipmentFormDialog({
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button variant="contained" onClick={handleSubmit}>
-          Save
+        <Button disabled={loading} onClick={onClose}>
+          Cancel
+        </Button>
+        <Button variant="contained" disabled={loading} onClick={handleSubmit}>
+          {loading ? "Processing..." : "Save Shipment"}
         </Button>
       </DialogActions>
     </Dialog>
