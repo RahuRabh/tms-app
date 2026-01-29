@@ -10,7 +10,11 @@ import { LOGIN } from "../graphql/mutations";
 import { useMutation } from "@apollo/client/react";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
+  const { enqueueSnackbar } = useSnackbar();
+  const [errors, setErrors] = useState({ email: "", password: "" });
+
   const [login] = useMutation<loginResponse, loginVariables>(LOGIN, {
     onCompleted: () => {
       enqueueSnackbar("Login successful! Welcome back.", {
@@ -23,20 +27,31 @@ export default function LoginPage() {
       });
     },
   });
-  const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar();
+
+  const validate = () => {
+    const newErrors = { email: "", password: "" };
+    if (!form.email) newErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(form.email))
+      newErrors.email = "Email is invalid";
+
+    if (!form.password) newErrors.password = "Password is required";
+    setErrors(newErrors);
+    return Object.values(newErrors).every((x) => x === "");
+  };
 
   const handleChange = (e: any) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleLogin = async () => {
-    const { data } = await login({ variables: form });
+    if (validate()) {
+      const { data } = await login({ variables: form });
 
-    if (!data) return;
+      if (!data) return;
 
-    localStorage.setItem("token", data.login.token);
-    localStorage.setItem("user", JSON.stringify(data.login.user));
-    navigate("/shipments/view");
+      localStorage.setItem("token", data.login.token);
+      localStorage.setItem("user", JSON.stringify(data.login.user));
+      navigate("/shipments/view");
+    }
   };
 
   return (
@@ -76,6 +91,8 @@ export default function LoginPage() {
         <TextField
           label="Email Address"
           name="email"
+          error={!!errors.email}
+          helperText={errors.email}
           fullWidth
           variant="outlined"
           margin="normal"
@@ -87,6 +104,8 @@ export default function LoginPage() {
           label="Password"
           name="password"
           type="password"
+          error={!!errors.password}
+          helperText={errors.password}
           fullWidth
           variant="outlined"
           margin="normal"

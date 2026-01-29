@@ -7,4 +7,10 @@
     });
   };
 
-export default formatDate  
+const formatDateInput = (timestamp: string) => {
+  if (!timestamp) return "";
+  const date = new Date(parseInt(timestamp));
+  return isNaN(date.getTime()) ? "" : date.toISOString().split("T")[0];
+}
+
+export default formatDateInput; formatDate;
