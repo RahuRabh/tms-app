@@ -33,7 +33,7 @@ A professional, full-stack SaaS-style Transportation Management System built to 
 - **Dual Views:** High-density Data Grid and modern Tile/Card layouts.
 - **Data Controls:** 
   - **Filter:** Instant status-based filtering (Pending, In Transit, etc.).
-  - **Sort:** Persistent server-side sorting by Rate and Date.
+  - **Sort:** Persistent server-side sorting by Rate.
   - **Pagination:** Offset-based navigation with dynamic page counts.
 - **Detail Drawer:** Deep-dive view with "Logistics Route Map" visualization.
 

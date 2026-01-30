@@ -81,7 +81,6 @@ export default function ShipmentFormDialog({
         ...form,
         rate: parseFloat(form.rate),
       });
-      onClose();
     }
   };
 

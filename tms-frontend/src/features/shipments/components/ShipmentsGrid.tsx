@@ -23,6 +23,7 @@ import { DELETE_SHIPMENT, FLAG_SHIPMENT } from "../graphql/mutations";
 import { useSnackbar } from "notistack";
 
 import getStatusStyles from "../../../utils/statusStyle";
+// import formatDate from "../../../utils/formatDate";
 
 interface FlagMutationResponse {
   flagShipment: {
@@ -60,12 +61,15 @@ export default function ShipmentsGrid({
 
   const [deleteShipment] = useMutation<DeleteResponse>(DELETE_SHIPMENT, {
     update(cache, { data }, { variables }) {
-    if (data?.deleteShipment) {
-      const normalizedId = cache.identify({ __typename: 'Shipment', id: variables?.id });
-      cache.evict({ id: normalizedId });
-      cache.gc();
-    }
-  },
+      if (data?.deleteShipment) {
+        const normalizedId = cache.identify({
+          __typename: "Shipment",
+          id: variables?.id,
+        });
+        cache.evict({ id: normalizedId });
+        cache.gc();
+      }
+    },
     onCompleted: () => {
       enqueueSnackbar("Shipment deleted", { variant: "info" });
     },
@@ -75,14 +79,16 @@ export default function ShipmentsGrid({
   });
 
   const [flagShipment] = useMutation<FlagMutationResponse>(FLAG_SHIPMENT, {
-  onCompleted: (data) => {
-    const message = data.flagShipment.flagged ? "Flagged" : "Unflagged";
-    enqueueSnackbar(`Shipment ${message}`, { variant: "success" });
-  },
-  onError: (error) => {
-    enqueueSnackbar(error.message || "Operation failed", { variant: "error" });
-  },
-});
+    onCompleted: (data) => {
+      const message = data.flagShipment.flagged ? "Flagged" : "Unflagged";
+      enqueueSnackbar(`Shipment ${message}`, { variant: "success" });
+    },
+    onError: (error) => {
+      enqueueSnackbar(error.message || "Operation failed", {
+        variant: "error",
+      });
+    },
+  });
 
   return (
     <Paper elevation={0} sx={{ border: "1px solid", borderColor: "divider" }}>
@@ -113,9 +119,15 @@ export default function ShipmentsGrid({
             >
               <TableSortLabel
                 active={true}
-                direction={sortConfig.field === "rate" ? (sortConfig.order === 1 ? "asc" : "desc") : "asc"}
+                direction={
+                  sortConfig.field === "rate"
+                    ? sortConfig.order === 1
+                      ? "asc"
+                      : "desc"
+                    : "asc"
+                }
                 onClick={() => onSort("rate")}
-                sx={{color: "primary.main !important"}}
+                sx={{ color: "primary.main !important" }}
               >
                 Rate
               </TableSortLabel>
@@ -213,6 +225,9 @@ export default function ShipmentsGrid({
                 <TableCell sx={{ fontWeight: 700, color: "primary.main" }}>
                   ₹{s.rate}
                 </TableCell>
+                {/* <TableCell sx={{ fontWeight: 700, color: "primary.main" }}>
+                  {formatDate(s.createdAt)}
+                </TableCell> */}
                 <TableCell onClick={(e) => e.stopPropagation()}>
                   <IconButton
                     color="inherit"

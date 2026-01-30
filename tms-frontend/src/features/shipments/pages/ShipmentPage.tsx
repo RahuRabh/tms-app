@@ -64,6 +64,7 @@ export default function ShipmentPage() {
       },
     ],
     onCompleted: () => {
+      closeForm();
       enqueueSnackbar("Shipment Added", { variant: "info" });
     },
     onError: () => {
@@ -84,6 +85,7 @@ export default function ShipmentPage() {
       },
     ],
     onCompleted: () => {
+      closeForm();
       enqueueSnackbar("Shipment Updated", { variant: "info" });
     },
     onError: () => {
