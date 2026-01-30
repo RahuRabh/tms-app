@@ -1,10 +1,5 @@
 require("dotenv").config();
-const cors = require("cors");
-const express = require("express");
-
-const app = express();
-app.use(cors());
-app.use(express.json());
+const app = require('./app');
 
 const http = require("http");
 const { ApolloServer } = require("@apollo/server");
@@ -40,8 +35,7 @@ const startServer = async () => {
             token.replace("Bearer ", ""),
             process.env.JWT_SECRET,
           );
-          const user = await User.findById(decoded.id);
-          return { user };
+          return { user: decoded };
         } catch {
           return {};
         }
